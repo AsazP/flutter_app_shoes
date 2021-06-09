@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           _cart(),
-          _animatedBody(_height, _borderRadius),
+          _animatedBody(_height, _borderRadius, context),
         ],
       ),
     );
@@ -113,7 +113,7 @@ class _HomePageState extends State<HomePage> {
               tween: Tween(begin: 0.0, end: 1.0),
               duration: Duration(milliseconds: _milliseconds),
               builder: (context, value, widget) {
-              //  print(value);
+                //  print(value);
                 return Opacity(
                   opacity: value,
                   child: Transform.translate(
@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _animatedBody(double _height, _borderRadius) {
+  Widget _animatedBody(double _height, _borderRadius, BuildContext context) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 700),
       width: double.infinity,
@@ -155,16 +155,54 @@ class _HomePageState extends State<HomePage> {
         color: Color.fromRGBO(240, 241, 248, 1.0),
         borderRadius: _borderRadius,
       ),
-      child:
-     _gridProduct(),
-      /* child: Column(
+      child: Column(
         children: [
-          _options(),
-          _gridProduct(),
+          _titleSection(),
+
+          // _gridProduct(),
         ],
-      ), */
+      ),
     );
   }
+
+  //////////////////////////
+  ///
+  ///
+  Widget _titleSection() {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      child: Row(
+        children: [
+          Expanded(
+            /*1*/
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /*2*/
+                Container(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    'Shoes',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 26.0
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          /*3*/
+      
+          _options()
+        ],
+      ),
+    );
+  }
+
+  ///
+  ///
+  /////////////////////////
 
   Widget _options() {
     return GestureDetector(
@@ -180,14 +218,14 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
               child: Row(
                 children: [
-                  Icon(Icons.filter_list_alt),
-                  SizedBox(width: 5.0),
                   Text(
-                    "Filter",
+                    "Sort by",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                    ),
+                    ), 
                   ),
+                  SizedBox(width: 5.0),                  
+                  Icon(Icons.filter_list_alt),
                 ],
               ),
             ),
@@ -268,7 +306,7 @@ class _HomePageState extends State<HomePage> {
                       onTap: () {
                         addItems.add(products[index]);
                         setState(() {});
-                       // print(addItems.length);
+                        // print(addItems.length);
                       },
                       child: CircleAvatar(
                         backgroundColor: Colors.transparent,
@@ -282,7 +320,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                   // print("Click!!!");
+                    // print("Click!!!");
                     Navigator.push(
                       context,
                       MaterialPageRoute(
