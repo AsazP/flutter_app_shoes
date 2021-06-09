@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
           margin: EdgeInsets.only(left: 25.0),
           child: CircleAvatar(
             backgroundImage: NetworkImage(
+              //"https://cdn.icon-icons.com/icons2/370/PNG/512/Users2_37173.png"
               "https://i.pinimg.com/474x/5c/8e/67/5c8e6791cd678ea84417366f0c5c5d67.jpg",
             ),
           ),
@@ -112,7 +113,7 @@ class _HomePageState extends State<HomePage> {
               tween: Tween(begin: 0.0, end: 1.0),
               duration: Duration(milliseconds: _milliseconds),
               builder: (context, value, widget) {
-                print(value);
+              //  print(value);
                 return Opacity(
                   opacity: value,
                   child: Transform.translate(
@@ -154,7 +155,8 @@ class _HomePageState extends State<HomePage> {
         color: Color.fromRGBO(240, 241, 248, 1.0),
         borderRadius: _borderRadius,
       ),
-      child: _gridProduct(),
+      child:
+     _gridProduct(),
       /* child: Column(
         children: [
           _options(),
@@ -266,7 +268,7 @@ class _HomePageState extends State<HomePage> {
                       onTap: () {
                         addItems.add(products[index]);
                         setState(() {});
-                        print(addItems.length);
+                       // print(addItems.length);
                       },
                       child: CircleAvatar(
                         backgroundColor: Colors.transparent,
@@ -280,7 +282,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    print("Click!!!");
+                   // print("Click!!!");
                     Navigator.push(
                       context,
                       MaterialPageRoute(
