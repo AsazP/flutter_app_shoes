@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_demo/models/product_model.dart';
 import 'package:flutter_ecommerce_demo/pages/detail_page.dart';
+import 'package:flutter_ecommerce_demo/pages/filter_page.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -11,6 +12,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<ProductModel> addItems = [];
+//Para Slider
+RangeValues _currentRangeValues = const RangeValues(40, 80);
 
   @override
   Widget build(BuildContext context) {
@@ -27,18 +30,21 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(240, 241, 248, 1.0),
       appBar: AppBar(
-        elevation: 0,
+        elevation: 0.8,
         backgroundColor: Color.fromRGBO(240, 241, 248, 1.0),
         leading: Container(
           margin: EdgeInsets.only(left: 25.0),
           child: CircleAvatar(
             backgroundImage: NetworkImage(
               //"https://cdn.icon-icons.com/icons2/370/PNG/512/Users2_37173.png"
-              "https://i.pinimg.com/474x/5c/8e/67/5c8e6791cd678ea84417366f0c5c5d67.jpg",
+              //"https://i.pinimg.com/474x/5c/8e/67/5c8e6791cd678ea84417366f0c5c5d67.jpg",
+              ""
             ),
           ),
         ),
+        title: _titleSection(),
         actions: [
+        
           Icon(
             Icons.search,
             color: Colors.black,
@@ -46,11 +52,13 @@ class _HomePageState extends State<HomePage> {
           ),
           SizedBox(width: 25.0),
         ],
+        
       ),
       body: Stack(
         children: [
           _cart(),
           _animatedBody(_height, _borderRadius, context),
+
         ],
       ),
     );
@@ -155,13 +163,8 @@ class _HomePageState extends State<HomePage> {
         color: Color.fromRGBO(240, 241, 248, 1.0),
         borderRadius: _borderRadius,
       ),
-      child: Column(
-        children: [
-          _titleSection(),
-
-          // _gridProduct(),
-        ],
-      ),
+      child:   _gridProduct(),
+        
     );
   }
 
@@ -185,16 +188,15 @@ class _HomePageState extends State<HomePage> {
                     'Shoes',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 26.0
+                      fontSize: 26.0,
+                      color: Colors.black
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          /*3*/
-      
-          _options()
+          _filter()
         ],
       ),
     );
@@ -204,28 +206,36 @@ class _HomePageState extends State<HomePage> {
   ///
   /////////////////////////
 
-  Widget _options() {
+  Widget _filter() {
     return GestureDetector(
-      onTap: () => _settingModalBottomSheet(context),
+      onTap: () {
+         Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FilterPage(),
+                      ),
+                    );
+      },
       child: Row(
         children: [
           Card(
-            elevation: 5.0,
+           /* elevation: 5.0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18.0),
-            ),
+            ),*/
+            color: Color.fromRGBO(240, 241, 248, 1.0),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
               child: Row(
-                children: [
+                children: [   
                   Text(
-                    "Sort by",
+                    "Filter",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ), 
                   ),
-                  SizedBox(width: 5.0),                  
-                  Icon(Icons.filter_list_alt),
+                 // SizedBox(width: 5.0),             
+                  Icon(Icons.filter_list_alt,color: Colors.black,),  
                 ],
               ),
             ),
@@ -239,37 +249,83 @@ class _HomePageState extends State<HomePage> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext bc) {
-        return Container(
-          child: new Wrap(
-            children: <Widget>[
-              new ListTile(
-                  leading: new Icon(Icons.music_note),
-                  title: new Text('Music'),
-                  onTap: () => {}),
-              new ListTile(
-                leading: new Icon(Icons.videocam),
-                title: new Text('Video'),
-                onTap: () => {},
-              ),
-              new ListTile(
-                  leading: new Icon(Icons.music_note),
-                  title: new Text('Music'),
-                  onTap: () => {}),
-              new ListTile(
-                leading: new Icon(Icons.videocam),
-                title: new Text('Video'),
-                onTap: () => {},
-              ),
-              new ListTile(
-                  leading: new Icon(Icons.music_note),
-                  title: new Text('Music'),
-                  onTap: () => {}),
-              new ListTile(
-                leading: new Icon(Icons.videocam),
-                title: new Text('Video'),
-                onTap: () => {},
-              ),
-            ],
+        return Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Container(
+            child: new Wrap(
+              children: <Widget>[
+                new Row(
+                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               
+                  children: [
+                     Text(
+                       "FIlter"
+                       ,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0),
+                      ), 
+                     Text(
+                       "Reset"
+                        ,style: TextStyle(fontWeight: FontWeight.bold,),
+                     )
+                  ],
+                ),
+                Text("PRICE"),
+                RangeSlider(
+      values: _currentRangeValues,
+      min: 0,
+      max: 100,
+      divisions: 5,
+      labels: RangeLabels(
+        _currentRangeValues.start.round().toString(),
+        _currentRangeValues.end.round().toString(),
+      ),
+      onChanged: (RangeValues values) {
+        setState(() {
+          _currentRangeValues = values;
+        });
+      },
+    ),
+                new Slider(
+                label: "PRICE",
+                    value:10,
+                    min: 10.0,
+                    max: 150.0,
+                    onChanged: (value) {
+                    print(value);
+      //  _valueSlider = value;
+                   setState(() {
+                     
+                   });
+      },
+    ),
+                new ListTile(
+                    leading: new Icon(Icons.music_note),
+                    title: new Text('Music'),
+                    onTap: () => {}),
+                new ListTile(
+                  leading: new Icon(Icons.videocam),
+                  title: new Text('Video'),
+                  onTap: () => {},
+                ),
+                new ListTile(
+                    leading: new Icon(Icons.music_note),
+                    title: new Text('Music'),
+                    onTap: () => {}),
+                new ListTile(
+                  leading: new Icon(Icons.videocam),
+                  title: new Text('Video'),
+                  onTap: () => {},
+                ),
+                new ListTile(
+                    leading: new Icon(Icons.music_note),
+                    title: new Text('Music'),
+                    onTap: () => {}),
+                new ListTile(
+                  leading: new Icon(Icons.videocam),
+                  title: new Text('Video'),
+                  onTap: () => {},
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -320,7 +376,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    // print("Click!!!");
+                    print("Click!!!");
                     Navigator.push(
                       context,
                       MaterialPageRoute(
